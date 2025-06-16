@@ -19,12 +19,9 @@
           ansible.builtin.include_role:
             name: bootstrap_Alma
 
-    # - name : Configuring the webserver and container environment.
-    #   ansible.builtin.include_role:
-    #     name : "{{ item }}"
-    #   loop:
-    #     - webserver_with_containers_RHEL
-    #     - wwwProd_container_env
+    - name : Configuring the webserver and container environment.
+      ansible.builtin.include_role:
+        name : podman
 
 
 

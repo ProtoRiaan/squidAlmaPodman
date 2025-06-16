@@ -60,22 +60,25 @@
     - containers/squid/config
     - containers/squid/env
 
-- name: Copy Docker Compose file
-  ansible.builtin.copy:
-    src: compose.yml
-    dest: /home/{{ ansible_ssh_user }}/containers/squid/compose.yml
-    mode: '0644'
-
-- name: Copy Squid files
+- name: Copy needed files. 
   ansible.builtin.copy:
     src: "{{ item.source }}"
     dest: "/home/{{ ansible_ssh_user }}/containers/squid/{{item.dest}}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: '0644'
   loop:
-    - source:
-      dest:
-    - source:
-      dest:
+    - source: compose.yml
+      dest: compose.yml
+    - source: squid.conf
+      dest: config/squid.conf
 
-   
+- name: Generate Squid password file from template
+  ansible.builtin.template:
+    src: templates/passwd.j2
+    dest: /home/{{ ansible_ssh_user }}/containers/squid/config/passwd
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0640'
+    
 
