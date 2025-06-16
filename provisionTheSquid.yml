@@ -13,7 +13,7 @@
         - name: Trigger bootstrap rescue
           fail:
             msg: Unable to connect with ansible user, attempting to bootsrap
-          when: 'pong_result.msg is defined and "Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password)." in pong_result.msg'
+          when: 'pong_result.msg is defined and "Too many authentication failures" in pong_result.msg'
       rescue:
         - name: Running Bootstrap roles
           ansible.builtin.include_role:

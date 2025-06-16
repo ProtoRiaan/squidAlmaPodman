@@ -1,0 +1,81 @@
+- name : Update all packages
+  dnf :
+    update_cache : yes
+    name : "*"
+    state : latest
+
+- name : Install Web Server Packages
+  dnf :
+    name : 
+      - vim
+      - git
+      - firewalld
+
+- name: Set Hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}.outerbelt.net"
+    use: "systemd"
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  become: yes
+
+- name: Install Docker
+  ansible.builtin.dnf:
+    update_cache : yes
+    name : 
+      - docker-ce
+      - docker-ce-cli 
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state : latest
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+  become: yes
+
+- name: Create Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+  loop:
+    - containers
+    - containers/squid
+    - containers/squid/config
+    - containers/squid/env
+
+- name: Copy Docker Compose file
+  ansible.builtin.copy:
+    src: compose.yml
+    dest: /home/{{ ansible_ssh_user }}/containers/squid/compose.yml
+    mode: '0644'
+
+- name: Copy Squid files
+  ansible.builtin.copy:
+    src: "{{ item.source }}"
+    dest: "/home/{{ ansible_ssh_user }}/containers/squid/{{item.dest}}"
+    mode: '0644'
+  loop:
+    - source:
+      dest:
+    - source:
+      dest:
+
+   
+

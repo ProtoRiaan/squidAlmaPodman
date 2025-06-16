@@ -1,6 +1,7 @@
 ---
 ansible_host: "{{ vault_ansible_host }}"
 ansible_user: "{{ vault_ansible_user }}"
-ansible_ssh_pass: "{{ vault_ansible_ssh_pass }}"
+ansible_become_password: "{{ vault_ansible_become_password }}"
 ssh_users: "{{ vault_ansible_user}} {{ vault_ssh_users }}"
+hostname: squidAlmaPodman
 

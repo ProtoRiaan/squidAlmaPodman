@@ -1,0 +1,2 @@
+---
+squid_pw_string: "{{ vault_squid_pw_string }}"
