@@ -1,3 +1,4 @@
 ---
 squid_pw_string: "{{ vault_squid_pw_string }}"
+my_IPv4 : "{{ vault_my_IPv4 }}"
 ansible_become: yes

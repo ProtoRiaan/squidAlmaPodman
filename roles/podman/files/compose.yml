@@ -4,6 +4,7 @@ services:
     container_name: squid_proxy
     ports:
       - "3128:3128"
+      - "443:443"
     volumes:
       - ./config/squid.conf:/etc/squid/squid.conf:ro
       - ./config/passwd:/etc/squid/passwd:ro
