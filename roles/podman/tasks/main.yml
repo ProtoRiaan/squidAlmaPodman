@@ -81,7 +81,7 @@
   loop:
     - source: passwd.j2
       dest: config/passwd
-    - source: squid.conf.j3
+    - source: squid.conf.j2
       dest: config/squid.conf
     
 
