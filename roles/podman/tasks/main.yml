@@ -70,15 +70,18 @@
   loop:
     - source: compose.yml
       dest: compose.yml
-    - source: squid.conf
-      dest: config/squid.conf
 
-- name: Generate Squid password file from template
+- name: Generate Squid password and config file from template
   ansible.builtin.template:
-    src: templates/passwd.j2
-    dest: /home/{{ ansible_ssh_user }}/containers/squid/config/passwd
+    src: "templates/{{ item.source }}"
+    dest: "/home/{{ ansible_ssh_user }}/containers/squid/{{item.dest}}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: '0640'
+  loop:
+    - source: passwd.j2
+      dest: config/passwd
+    - source: squid.conf.j3
+      dest: config/squid.conf
     
 
