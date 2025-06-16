@@ -1,0 +1,32 @@
+---
+- name: Provision Linode servers
+  hosts : squidTest
+  gather_facts: no
+  become : false
+  tasks:
+    - name: Bootstrap if needed.
+      block:
+        - name : Test ssh connection
+          ping:
+          ignore_unreachable: yes
+          register: pong_result
+        - name: Trigger bootstrap rescue
+          fail:
+            msg: Unable to connect with ansible user, attempting to bootsrap
+          when: 'pong_result.msg is defined and "Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password)." in pong_result.msg'
+      rescue:
+        - name: Running Bootstrap roles
+          ansible.builtin.include_role:
+            name: bootstrap_Alma
+
+    # - name : Configuring the webserver and container environment.
+    #   ansible.builtin.include_role:
+    #     name : "{{ item }}"
+    #   loop:
+    #     - webserver_with_containers_RHEL
+    #     - wwwProd_container_env
+
+
+
+
+

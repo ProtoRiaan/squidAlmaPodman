@@ -1,0 +1,38 @@
+- name : Update all packages
+  dnf :
+    update_cache : yes
+    name : "*"
+    state : latest
+
+- name : Install Web Server Packages
+  dnf :
+    name : 
+      - vim
+      - git
+      - firewalld
+
+- name: Create Ansible User
+  ansible.builtin.user:
+    name: "{{ ansible_user_account }}"
+    password: "{{ ansible_become_password | password_hash('sha512')}}"
+    groups: wheel
+    append: yes
+    create_home: yes
+
+- name: Copy SSh Key | copying shh key to remote host
+  authorized_key:
+       user: "{{ ansible_user_account }}"
+       state: present
+       key: "{{ lookup('file', item) }}"
+  with_fileglob:
+    - ssh/squidAlmaTest.pub
+  become: true
+
+- name: Secure SSH.
+  template:
+    src: sshd_config_alma.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload sshd
