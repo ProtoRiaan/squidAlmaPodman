@@ -70,6 +70,9 @@
   loop:
     - source: compose.yml
       dest: compose.yml
+    - source: dockerfile
+      dest: dockerfile
+
 
 - name: Generate Squid password and config file from template
   ansible.builtin.template:
