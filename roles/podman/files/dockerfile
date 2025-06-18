@@ -1,0 +1,10 @@
+FROM alpine:latest
+
+RUN apk update && \
+    apk add --no-cache squid && \
+    rm -rf /var/cache/apk/*
+
+RUN mkdir -p /var/cache/squid && \
+    chown -R squid:squid /var/cache/squid
+
+ENTRYPOINT ["squid", "-N"]
