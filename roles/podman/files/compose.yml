@@ -1,6 +1,9 @@
+---
 services:
   squid:
-    image: ubuntu/squid:latest
+    build: 
+      context: .
+      dockerfile: dockerfile
     container_name: squid_proxy
     ports:
       - "3128:3128"
